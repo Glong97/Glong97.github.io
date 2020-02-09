@@ -130,6 +130,523 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Linux_Redis_相关配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/09/Linux_Redis_相关配置/">Linux_Redis_相关配置</a>
+    </h1>
+  
+
+        
+        <a href="/2020/02/09/Linux_Redis_相关配置/" class="archive-article-date">
+  	<time datetime="2020-02-09T15:49:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Redis相关配置"><a href="#Redis相关配置" class="headerlink" title="Redis相关配置"></a>Redis相关配置</h3><ul>
+<li>include<ul>
+<li>类似jsp中的include，多实例的情况可以把公用的配置文件提取出来</li>
+</ul>
+</li>
+<li>ip地址的绑定(bind)<ul>
+<li>默认情况bind=127.0.0.1只能接受本机的访问请求，不写的情况下，无限制接受任何ip地址的访问，生产环境肯定要写你应用服务器的地址</li>
+</ul>
+</li>
+<li>protected-mode<ul>
+<li>如果开启了protected-mode，那么在没有设定bind ip且没有设密码的情况下，Redis只允许接受本机的响应,所以记得改为no</li>
+</ul>
+</li>
+<li>tcp-backlog<ul>
+<li>可以理解是一个请求到达后至到接受进程处理前的队列,backlog队列总和=未完成三次握手队列 +  已经完成三次握手队列。 </li>
+<li>高并发环境tcp-backlog 设置值跟超时时限内的Redis吞吐量决定</li>
+</ul>
+</li>
+<li>timeout<ul>
+<li>一个空闲的客户端维持多少秒会关闭，0为永不关闭。</li>
+</ul>
+</li>
+<li>TCP keepalive<ul>
+<li>对访问客户端的一种心跳检测，每个n秒检测一次。官方推荐设为60秒。</li>
+</ul>
+</li>
+</ul>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/02/09/Linux_Redis_相关配置/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Linux_Redis事务" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/09/Linux_Redis事务/">Linux_Redis_事务</a>
+    </h1>
+  
+
+        
+        <a href="/2020/02/09/Linux_Redis事务/" class="archive-article-date">
+  	<time datetime="2020-02-09T15:17:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Redis事务"><a href="#Redis事务" class="headerlink" title="Redis事务"></a>Redis事务</h3><h4 id="Redis事务的定义"><a href="#Redis事务的定义" class="headerlink" title="Redis事务的定义"></a>Redis事务的定义</h4><ul>
+<li>Redis事务是一个单独的隔离操作：事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。</li>
+<li>Redis事务的主要作用就是串联多个命令防止别的命令插队。<h4 id="Redis事务命令"><a href="#Redis事务命令" class="headerlink" title="Redis事务命令"></a>Redis事务命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">multi : 从输入multi命令开始，之后输入的命令会依次进入命令队列中，但不会执行。</span><br><span class="line">-</span><br><span class="line">exec ：输入exec后，Redis会将之前的命令依次执行。</span><br><span class="line">-</span><br><span class="line">discard ：事务过程可以通过discard来放弃。</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/02/09/Linux_Redis事务/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Linux_Redis_相关知识和常用指令" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/09/Linux_Redis_相关知识和常用指令/">Linux_Redis_相关知识和常用指令</a>
+    </h1>
+  
+
+        
+        <a href="/2020/02/09/Linux_Redis_相关知识和常用指令/" class="archive-article-date">
+  	<time datetime="2020-02-09T06:35:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Redis相关知识"><a href="#Redis相关知识" class="headerlink" title="Redis相关知识"></a>Redis相关知识</h3><ul>
+<li><p>默认16个数据库，类似数组下标从0开始，初始默认使用0号库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用命令 select   &lt;dbid&gt;  来切换数据库。如: select 8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>统一密码管理，所有库都是同样密码，要么都OK要么一个也连接不上。</p>
+</li>
+<li><p>Redis是单线程+多路IO复用技术</p>
+<ul>
+<li>多路复用是指使用一个线程来检查多个文件描述符（Socket）的就绪状态，比如调用select和poll函数，传入多个文件描述符，如果有一个文件描述符就绪，则返回，否则阻塞直到超时。得到就绪状态后进行真正的操作可以在同一个线程里执行，也可以启动线程执行（比如使用线程池）。  </li>
+</ul>
+</li>
+<li><p><em><strong>tips:解决redis中文乱码：启动redis客户端时加 –raw,如：redis-cli –raw</strong></em></p>
+</li>
+</ul>
+<hr>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/02/09/Linux_Redis_相关知识和常用指令/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Linux_Redis安装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/09/Linux_Redis安装/">Linux_Redis_安装</a>
+    </h1>
+  
+
+        
+        <a href="/2020/02/09/Linux_Redis安装/" class="archive-article-date">
+  	<time datetime="2020-02-09T01:15:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Redis安装"><a href="#Redis安装" class="headerlink" title="Redis安装"></a>Redis安装</h2><h3 id="1、Redis在Linux安装"><a href="#1、Redis在Linux安装" class="headerlink" title="1、Redis在Linux安装"></a>1、Redis在Linux安装</h3><ul>
+<li><p>(1)下载redis安装包后放在/opt/目录下</p>
+</li>
+<li><p>(2)解压:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如：tar -zxvf redis-3.2.5.tar.gz</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>(3)解压完后进入目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如：cd redis-3.2.5</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>(4)在redis-3.2.5目录下执行make命令<br><em><strong>运行make命令时出现故障为错误解析：gcc命令未找到</strong></em>  </p>
+</li>
+</ul>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/02/09/Linux_Redis安装/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Linux_JAVA_JDK安装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/07/Linux_JAVA_JDK安装/">Linux_JAVA_JDK安装</a>
+    </h1>
+  
+
+        
+        <a href="/2020/02/07/Linux_JAVA_JDK安装/" class="archive-article-date">
+  	<time datetime="2020-02-07T14:35:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2><ul>
+<li>把安装包解压到/opt下</li>
+<li>配置环境变量配置文件 vim /etc/profile</li>
+<li>在末行加入下面几行：</li>
+<li>JAVA_HOME=/opt/jdk的路径</li>
+<li>PATH=$JAVA_HOME/bin:$PATH</li>
+<li>export JAVA_HOME PATH  <h2 id="使环境变量生效"><a href="#使环境变量生效" class="headerlink" title="使环境变量生效"></a>使环境变量生效</h2><h3 id="两种方法"><a href="#两种方法" class="headerlink" title="两种方法"></a>两种方法</h3></li>
+<li>1、source /etc/profile</li>
+<li>2、重启系统</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/02/07/Linux_JAVA_JDK安装/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Linux_MySQL_安装与配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/07/Linux_MySQL_安装与配置/">Linux_MySQL_安装与配置</a>
+    </h1>
+  
+
+        
+        <a href="/2020/02/07/Linux_MySQL_安装与配置/" class="archive-article-date">
+  	<time datetime="2020-02-07T14:35:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a>安装MySQL</h1><h2 id="CentOS7"><a href="#CentOS7" class="headerlink" title="CentOS7"></a>CentOS7</h2><h3 id="1、检查是否有Linux默认安装的MySQL"><a href="#1、检查是否有Linux默认安装的MySQL" class="headerlink" title="1、检查是否有Linux默认安装的MySQL"></a>1、检查是否有Linux默认安装的MySQL</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep mariadb</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、-如果存在则卸载"><a href="#2、-如果存在则卸载" class="headerlink" title="2、 如果存在则卸载"></a>2、 如果存在则卸载</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps mariadb  </span><br><span class="line"></span><br><span class="line">--nodeps:忽略依赖关系</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、-检查-tmp权限使权限为777"><a href="#3、-检查-tmp权限使权限为777" class="headerlink" title="3、 检查/tmp权限使权限为777"></a>3、 检查/tmp权限使权限为777</h3><pre><code>执行：chmod -R 777 /tmp</code></pre><h3 id="4、-拷贝如下MySQL文件到-opt"><a href="#4、-拷贝如下MySQL文件到-opt" class="headerlink" title="4、 拷贝如下MySQL文件到/opt"></a>4、 拷贝如下MySQL文件到/opt</h3><ul>
+<li>MySQL-client-5.5.54-1.linux2.6.x86_64.rpm </li>
+<li>MySQL-server-5.5.54-1.linux2.6.x86_64.rpm</li>
+</ul>
+<h3 id="5、执行如下命令进行安装"><a href="#5、执行如下命令进行安装" class="headerlink" title="5、执行如下命令进行安装"></a>5、执行如下命令进行安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh MySQL-client-5.5.54-1.linux2.6.x86_64.rpm </span><br><span class="line">rpm -ivh MySQL-server-5.5.54-1.linux2.6.x86_64.rpm</span><br></pre></td></tr></table></figure>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/02/07/Linux_MySQL_安装与配置/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-lua学习笔记（一）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -304,7 +821,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 Glong
+    		&copy; 2020 Glong
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -387,11 +904,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">英语语法</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">lua</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">英语语法</a>
               </li>
             
             <div class="clearfix"></div>
